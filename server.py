@@ -1,48 +1,30 @@
-from flask import Flask, request, render_template, jsonify
+# CSE 138 Assignment 1
+# Author: Adit Bhagat (adbhagat@ucsc.edu)
+
+from flask import Flask, request
 import os
-import socket
-import sys
+import requests
 
 app = Flask(__name__)
 
-@app.route("/")
-def begin():
-    return "welcome to the home page"
+@app.route('/check', methods=["GET", "POST"])
+def check():
+    if request.method == "POST":
+        msg = request.args.get('msg')
+        if msg is not None:
+            return 'POST message received: %s' % msg
+        else:
+            return 'This method is unsupported.', 405
+    else:
+        if 'FORWARDING_ADDRESS' in os.environ:
+            try:
+                response = requests.get('http://'+ os.environ['FORWARDING_ADDRESS'] + '/check', timeout=20)
+            except requests.Timeout:
+                return 'Timed out!'
+            else:
+                return 'ASDF Request made: %s' % response.content
+        else:
+            return 'GET message received'
 
-@app.route("/kv-store/<string:key_name>", methods = ["GET","PUT", "DELETE"])
-def keyValStore(key_name):
-    if request.method == "PUT": 
-        try:
-            req_data = request.get_json()
-            data = req_data['data']
-			if len(key_name) > 50:
-				return jsonify({"error:":"Key is too long", "message":"Error in PUT"}), 400
-		except Exception as e:
-			return jsonify({"error:":"Value is missing", "message":"Error in PUT"}), 400
-    elif request.method == "GET": 
-        return "This method is unsupported.", 405
-    elif request.method == "DELETE":
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if __name__ == "__main__":
-    app.run(debug=True, host = '0.0.0.0', port = 13800)
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=13800)
