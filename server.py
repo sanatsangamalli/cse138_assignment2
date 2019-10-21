@@ -12,14 +12,11 @@ def begin():
 @app.route("/kv-store/<string:key_name>", methods = ["GET","PUT", "DELETE"])
 def keyValStore(key_name):
 	if request.method == "PUT":
-		#print("__")
-		#print(request)
-		#print("__")
 		return server.put(request, key_name)
 	elif request.method == "GET": 
-		return "This method is unsupported.", 405
+		return server.get(request, key_name)
 	elif request.method == "DELETE":
-		return ""
+		return server.delete(request, key_name)
 
 
 
