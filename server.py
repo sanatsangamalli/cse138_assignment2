@@ -18,11 +18,11 @@ def check():
     else:
         if 'FORWARDING_ADDRESS' in os.environ:
             try:
-                response = requests.get('http://'+ os.environ['FORWARDING_ADDRESS'] + '/check', timeout=20)
+                response = requests.get('http://'+ os.environ['FORWARDING_ADDRESS'] + '/check', data=request.get_json(), headers=request.headers, timeout=20)
             except requests.Timeout:
                 return 'Timed out!'
             else:
-                return 'ASDF Request made: %s' % response.content
+                return '%s type %s Json Request Foward Response: %s' % (str(dict(request.headers)), type(request.headers), response.content)
         else:
             return 'GET message received'
 
