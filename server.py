@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 import os
 import socket
 import sys
@@ -15,6 +15,10 @@ def keyValStore(key_name):
         try:
             req_data = request.get_json()
             data = req_data['data']
+			if len(key_name) > 50:
+				return jsonify({"error:":"Key is too long", "message":"Error in PUT"}), 400
+		except Exception as e:
+			return jsonify({"error:":"Value is missing", "message":"Error in PUT"}), 400
     elif request.method == "GET": 
         return "This method is unsupported.", 405
     elif request.method == "DELETE":
