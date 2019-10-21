@@ -1,0 +1,2 @@
+#!/bin/sh
+docker stop main-instance; docker rm main-instance; docker stop follower-instance; docker rm follower-instance; docker network rm kv_subnet; docker network create --subnet=10.10.0.0/16 kv_subnet; docker build -t kv-store:2.0 .; docker run -p 13800:13800 --net=kv_subnet --ip=10.10.0.2 --name="main-instance" kv-store:2.0
