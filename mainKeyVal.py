@@ -16,8 +16,8 @@ class mainKeyVal:
 	def put(self, request, key_name):
 		if len(key_name) > 50:
 			return jsonify({"error:":"Key is too long", "message":"Error in PUT"}), 400
-		req_data = request.get_json()
-		if 'value' in req_data:
+		req_data = request.get_json(silent=True)
+		if req_data is not None and 'value' in req_data:
 			data = req_data['value']
 			replaced = key_name in self.dictionary
 			self.dictionary[key_name] = data	
