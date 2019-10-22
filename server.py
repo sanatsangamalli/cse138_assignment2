@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, jsonify
 import os
 import sys
 from mainKeyVal import mainKeyVal
-#from followerKeyVal import followerKeyVal
+from followerKeyVal import followerKeyVal
 
 app = Flask(__name__)
 
@@ -25,8 +25,8 @@ def keyValStore(key_name):
 
 
 if __name__ == "__main__":
-    #if 'FORWARDING_ADDRESS' not in os.environ:
-    server = mainKeyVal()
-    #else:
-    #    server = followerKeyVal()
-    app.run(debug=True, host = '127.0.0.1', port = 13800)
+    if 'FORWARDING_ADDRESS' not in os.environ:
+        server = mainKeyVal()
+    else:
+        server = followerKeyVal()
+    app.run(debug=True, host = '0.0.0.0', port = 13800)

@@ -16,4 +16,4 @@ RUN pip install -r requirements.txt
 EXPOSE 13800
 
 # Run server.py when the container launches
-CMD ["python", "server.py"]
+CMD ["python", "-u", "server.py"]
